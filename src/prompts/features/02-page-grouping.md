@@ -27,7 +27,9 @@ Handles the core marketing footprint, pricing matrices, doctor discovery engine,
 
 ### Pages Included
 * `/` → Landing page (`page.tsx`)
-* `/search` → Advanced doctor discovery and specialty filtering directory
+* `/about` -> About page (`page.tsx`)
+* `/contact` -> Contact Us page (`page.tsx`)
+* `/doctors` → Advanced doctor discovery and specialty filtering directory
 * `/doctor/[id]` → Doctor profile views, availability timelines, and patient feedback feeds
 
 ### Layout: `app/(public)/layout.tsx`
@@ -71,6 +73,7 @@ The high-density clinical and operational workspace built specifically for verif
 * `/provider/calendar` → Advanced availability adjustments, recurring blockage toggling, and calendar sync parameters
 * `/provider/patients` → HIPAA-aligned global patient charts index, diagnostic update logs, and clinical record editing views
 * `/provider/payouts` → Paystack bank destination links, completed booking payout charts, and operational revenue data
+* `/provider/profile` → Doctor profile settings where he can edit profile info.
 
 ### Layout: `app/(provider)/layout.tsx`
 Shared UI includes:
@@ -124,7 +127,10 @@ app/
 │
 └── (admin)/
 ├── admin/dashboard/
+├── admin/doctors/
 ├── admin/verification/
+├── admin/appointment/
+├── admin/settings/
 └── layout.tsx
 
 ```

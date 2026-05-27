@@ -1,0 +1,52 @@
+import {
+  LayoutDashboard,
+  ShieldCheck,
+  Users,
+  Wallet,
+  type LucideIcon,
+} from "lucide-react";
+
+export const ADMIN_ROUTES = {
+  dashboard: "/admin/dashboard",
+  verification: "/admin/verification",
+  users: "/admin/users",
+  payouts: "/admin/payouts",
+} as const;
+
+export type AdminRouteKey = keyof typeof ADMIN_ROUTES;
+
+export interface AdminNavItem {
+  href: (typeof ADMIN_ROUTES)[AdminRouteKey];
+  label: string;
+  icon: LucideIcon;
+}
+
+export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
+  {
+    href: ADMIN_ROUTES.dashboard,
+    label: "Dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    href: ADMIN_ROUTES.verification,
+    label: "Verification",
+    icon: ShieldCheck,
+  },
+  {
+    href: ADMIN_ROUTES.users,
+    label: "Users",
+    icon: Users,
+  },
+  {
+    href: ADMIN_ROUTES.payouts,
+    label: "Payouts",
+    icon: Wallet,
+  },
+];
+
+export function isAdminNavActive(pathname: string, href: string): boolean {
+  if (href === ADMIN_ROUTES.dashboard) {
+    return pathname === href;
+  }
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
