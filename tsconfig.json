@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/fonts": ["./public/fonts/index.ts"]
     }
   },
   "include": [
