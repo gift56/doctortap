@@ -23,7 +23,11 @@ export function PublicHeader() {
     <>
       <header className="fixed inset-x-0 top-0 z-50 border-b border-border-default/80 bg-bg-base/95 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-4 sm:h-16 sm:px-6">
-          <AppLogo path={PUBLIC_ROUTES.home} className="min-w-0 shrink" />
+          <AppLogo
+            path={PUBLIC_ROUTES.home}
+            brandName="MyDoctorApp"
+            className="min-w-0 shrink"
+          />
 
           <nav className="hidden items-center gap-1 md:flex">
             {PUBLIC_NAV_ITEMS.map((item) => {
@@ -65,7 +69,7 @@ export function PublicHeader() {
                   : "text-text-muted hover:text-text-primary",
               )}
             >
-              Sign in
+              Login
             </Link>
             <Link
               href={PUBLIC_ROUTES.register}
@@ -74,7 +78,7 @@ export function PublicHeader() {
                 "rounded-md px-3",
               )}
             >
-              Get started
+              Create Account
             </Link>
           </div>
 
@@ -126,14 +130,14 @@ export function PublicHeader() {
               "w-full justify-center",
             )}
           >
-            Sign in
+            Login
           </Link>
           <Link
             href={PUBLIC_ROUTES.register}
             onClick={() => setMenuOpen(false)}
             className={cn(buttonVariants({ size: "sm" }), "w-full justify-center")}
           >
-            Get started
+            Create Account
           </Link>
         </div>
       </MobileNavDrawer>

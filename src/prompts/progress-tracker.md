@@ -5,11 +5,11 @@ change.
 
 ## Current Phase
 
-- In progress — App Router scaffolding (page grouping)
+- In progress — Public marketing homepage (Feature 03)
 
 ## Current Goal
 
-- Scaffold core stack from `architecture-context.md` (Clerk auth, Prisma + PostgreSQL), then build the public marketing homepage per `project-overview.md`.
+- Scaffold core stack from `architecture-context.md` (Clerk auth, Prisma + PostgreSQL).
 
 ## Completed
 
@@ -38,6 +38,15 @@ change.
   - Removed root `src/app/page.tsx`; landing page lives at `src/app/(public)/page.tsx`.
   - Verified production build succeeds (`npm run build`, 22 routes).
 
+- Feature 03 (`features/03-landing-page-ui.md`):
+  - Added `src/config/mock-data.ts` with 6 specialties and 10 mock doctors (Unsplash avatars, all `Available`).
+  - Built landing sections: hero banner, specialty selector, top doctors grid, and bottom CTA banner (`src/components/public/landing/`).
+  - Added reusable `DoctorCard` (`src/components/doctor-card.tsx`) and `ScrollReveal` on-scroll fade/slide animations with staggered grid delays.
+  - Wired Next.js `Link` routes: book appointment → `/doctors`, doctor cards → `/doctor/[id]`, MORE → `/doctors`, create account → `/register`.
+  - Updated public header: `MyDoctorApp` brand, `All Doctors` nav label, `Login` / `Create Account` actions.
+  - Configured `images.remotePatterns` for `images.unsplash.com` in `next.config.ts`.
+  - Verified production build succeeds (`npm run build`).
+
 ## In Progress
 
 - None.
@@ -45,7 +54,7 @@ change.
 ## Next Up
 
 - Scaffold core stack from `architecture-context.md` (Clerk auth, Prisma + PostgreSQL).
-- Build the public marketing homepage per `project-overview.md`.
+- Doctor profile & booking page UI (per design reference).
 
 ## Open Questions
 
@@ -59,9 +68,11 @@ change.
 - **Public fonts module:** `public/fonts/index.ts` + WOFF2 assets; `@/fonts` path alias; `next/font/google` in layout.
 - **shadcn/ui base-nova:** Primitives generated via the official CLI into `components/ui/` and treated as protected files.
 - **Domain layout folders:** Layout chrome lives in `src/components/{auth,public,patient,provider,admin}/`; shared UI such as `PageHeading` lives outside in `src/components/page-heading/`.
+- **Landing mock data:** Marketing homepage reads from `src/config/mock-data.ts` until Prisma/DB integration; no backend dependency for Feature 03.
+- **Scroll animations:** Lightweight `IntersectionObserver` client primitive (`ScrollReveal`) instead of adding a motion library; respects `motion-reduce`.
 
 ## Session Notes
 
 - All grouped routes compile as static placeholders except `/doctor/[id]` (dynamic).
 - Provider presence toggle is a client island (`components/provider/provider-status-header.tsx`); full auth-gated behavior waits on Clerk middleware.
-- Resume with Clerk + Prisma scaffolding, then the public marketing homepage.
+- Resume with Clerk + Prisma scaffolding, then doctor profile & booking UI.

@@ -7,12 +7,14 @@ interface AppLogoProps {
   path?: string;
   className?: string;
   badge?: string;
+  brandName?: string;
 }
 
 export function AppLogo({
   path = "/",
   className,
   badge,
+  brandName = "DoctorTap",
 }: AppLogoProps) {
   return (
     <Link
@@ -28,7 +30,7 @@ export function AppLogo({
         priority
       />
       <span className="text-base font-bold tracking-tight text-accent-primary sm:text-xl">
-        DoctorTap
+        {brandName}
       </span>
       {badge ? (
         <span className="hidden rounded-full border border-border-default bg-bg-base px-2.5 py-0.5 text-xs font-medium text-text-muted sm:inline-flex">

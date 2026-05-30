@@ -19,7 +19,7 @@ export interface PublicNavItem {
 
 export const PUBLIC_NAV_ITEMS: PublicNavItem[] = [
   { href: PUBLIC_ROUTES.home, label: "Home", icon: Home },
-  { href: PUBLIC_ROUTES.doctors, label: "Doctors", icon: Stethoscope },
+  { href: PUBLIC_ROUTES.doctors, label: "All Doctors", icon: Stethoscope },
   { href: PUBLIC_ROUTES.about, label: "About", icon: Info },
   { href: PUBLIC_ROUTES.contact, label: "Contact", icon: Mail },
 ];
