@@ -5,7 +5,7 @@ change.
 
 ## Current Phase
 
-- Complete — Patient billing workspace (Feature 12)
+- Complete — Provider calendar workspace (Feature 14)
 
 ## Current Goal
 
@@ -109,6 +109,22 @@ change.
   - Billing nav active state uses existing pathname-driven patient header (`/patient/billing`).
   - Verified production build succeeds (`npm run build`, `/patient/billing` static).
 
+- Feature 13 (`features/13-provider-dashboard.md`):
+  - Rebuilt provider shell: left sidebar (`w-64`, token-only active/secondary nav links) and merged header strip (`DoctorTap` + `Provider` badge, operational status toggle, Clerk `SignOutButton` logout).
+  - Built provider dashboard at `src/app/(provider)/provider/dashboard/page.tsx`: three metric cards (`₨ 1000` earnings, `2` appointments, `5` patients) and `Latest Bookings` feed.
+  - Added `src/lib/provider/provider-dashboard.ts` with mock metrics and queue rows; `provider-dashboard-metrics.tsx`, `provider-latest-bookings.tsx`, and `queue-row.tsx` (reject action toast placeholder).
+  - Removed standalone `provider-status-header.tsx`; presence toggle lives in `provider-header.tsx`.
+  - Added provider dashboard SEO: `buildProviderDashboardMetadata` (`src/lib/seo/provider-dashboard-metadata.ts`) and `ProviderDashboardJsonLd` with `noindex` for the authenticated portal route.
+  - Verified production build succeeds (`npm run build`, `/provider/dashboard` static).
+
+- Feature 14 (`features/14-provider-calendar.md`):
+  - Built provider calendar at `src/app/(provider)/provider/calendar/page.tsx`: split-screen scheduling workspace (`lg:grid-cols-12`), header typography block, mini month grid, batch slot generator (start/end selects, 30/45/60 min intervals), and active slots grid.
+  - Added `src/lib/provider/provider-calendar.ts` with `MOCK_PROVIDER_SLOTS`, slot generation/merge helpers, and calendar month/week utilities.
+  - Added `src/components/provider/provider-calendar-workspace.tsx`, `slot-pill.tsx` (active delete-on-hover pills; booked slots locked with muted styling).
+  - Calendar sidebar active state via existing pathname-driven `ProviderSidebar` (`/provider/calendar`).
+  - Added provider calendar SEO: `buildProviderCalendarMetadata` (`src/lib/seo/provider-calendar-metadata.ts`) and `ProviderCalendarJsonLd` with `noindex` for the authenticated portal route.
+  - Verified production build succeeds (`npm run build`, `/provider/calendar` static).
+
 ## In Progress
 
 - None.
@@ -139,9 +155,11 @@ change.
 - **Patient profile dashboard (Feature 10):** `/patient/dashboard` is a server-rendered health summary; demographics read Clerk identity fields with mock address/blood group until Prisma; header nav active state is pathname-driven; `Edit Profile` is a styled placeholder action.
 - **Patient appointments list (Feature 11):** `/patient/appointments` renders mock appointment rows from `lib/patient/patient-appointments.ts`; `AppointmentRow` maps three payment states (pending, payment required, paid) with token-only styling; cancel/pay actions are client-side toast placeholders until Prisma.
 - **Patient billing workspace (Feature 12):** `/patient/billing` renders financial summary cards and a mock invoice ledger from `lib/patient/patient-billing.ts`; succeeded/failed status badges and PDF receipt download use client toast placeholders until Paystack and storage integration.
+- **Provider dashboard workspace (Feature 13):** `/provider/dashboard` renders mock practice metrics (`₨` earnings, appointment/patient counts) and a latest-bookings queue from `lib/provider/provider-dashboard.ts`; sidebar/header shell uses pathname-driven active nav and inline online/offline toggle; queue reject uses client toast placeholder until Prisma.
+- **Provider calendar workspace (Feature 14):** `/provider/calendar` renders mock availability from `lib/provider/provider-calendar.ts` with date-keyed slot state, mini month picker, batch slot generator, weekly copy action, and `SlotPill` delete/booked UX; SEO uses `noindex` metadata and JSON-LD like other portal routes until Prisma sync.
 
 ## Session Notes
 
-- All grouped routes compile as static placeholders except `/doctors`, `/doctors/[id]`, `/patient/dashboard`, `/sign-in`, and `/sign-up` (dynamic); `/patient/appointments` and `/patient/billing` are static with client islands per row/action.
-- Provider presence toggle is a client island (`components/provider/provider-status-header.tsx`); route protection is active via Clerk proxy.
+- All grouped routes compile as static placeholders except `/doctors`, `/doctors/[id]`, `/patient/dashboard`, `/sign-in`, and `/sign-up` (dynamic); `/patient/appointments`, `/patient/billing`, `/provider/dashboard`, and `/provider/calendar` are static with client islands per row/action/toggle.
+- Provider presence toggle is a client island in `components/provider/provider-header.tsx`; route protection is active via Clerk proxy.
 - Resume with Prisma + PostgreSQL scaffolding from `architecture-context.md`.

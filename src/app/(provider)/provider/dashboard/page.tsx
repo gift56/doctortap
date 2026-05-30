@@ -1,10 +1,21 @@
-import { PageHeading } from "@/components/page-heading/page-heading";
+import type { Metadata } from "next";
+
+import { ProviderDashboardJsonLd } from "@/components/provider/provider-dashboard-json-ld";
+import { ProviderDashboardMetrics } from "@/components/provider/provider-dashboard-metrics";
+import { ProviderLatestBookings } from "@/components/provider/provider-latest-bookings";
+import { buildProviderDashboardMetadata } from "@/lib/seo/provider-dashboard-metadata";
+import { getSiteUrl } from "@/lib/seo/site-url";
+
+export const metadata: Metadata = buildProviderDashboardMetadata();
 
 export default function ProviderDashboardPage() {
   return (
-    <PageHeading
-      title="Provider dashboard"
-      description="Queue summary, daily slots, and operational balance metrics."
-    />
+    <>
+      <ProviderDashboardJsonLd siteUrl={getSiteUrl()} />
+      <div className="mx-auto w-full max-w-7xl space-y-8 p-8">
+        <ProviderDashboardMetrics />
+        <ProviderLatestBookings />
+      </div>
+    </>
   );
 }
