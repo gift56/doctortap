@@ -5,8 +5,8 @@ export const PUBLIC_ROUTES = {
   doctors: "/doctors",
   about: "/about",
   contact: "/contact",
-  login: "/login",
-  register: "/register",
+  login: "/sign-in",
+  register: "/sign-up",
 } as const;
 
 export type PublicRouteKey = keyof typeof PUBLIC_ROUTES;

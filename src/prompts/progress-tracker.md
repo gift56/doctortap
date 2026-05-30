@@ -5,11 +5,11 @@ change.
 
 ## Current Phase
 
-- Complete — Contact Us page (Feature 07)
+- Complete — Auth integration (Feature 09)
 
 ## Current Goal
 
-- Scaffold core stack from `architecture-context.md` (Clerk auth, Prisma + PostgreSQL).
+- Scaffold Prisma + PostgreSQL from `architecture-context.md`.
 
 ## Completed
 
@@ -77,17 +77,27 @@ change.
   - Added Contact page SEO: `buildContactPageMetadata` (`title`, `description`, `keywords`, Open Graph image, canonical) and `ContactPageJsonLd` schema.
   - Verified production build succeeds (`npm run build`).
 
+- Feature 09 (`features/09-auth-integration.md`):
+  - Wrapped root layout in `ClerkProvider` with token-driven `clerkAppearance` (`src/lib/clerk/appearance.ts`) using CSS variables only (no hardcoded hex in Clerk config).
+  - Added `src/proxy.ts` with `clerkMiddleware`: only `/patient`, `/provider`, and `/admin` routes require auth; public marketing and auth pages remain open; authenticated `/` redirects to `/patient/dashboard`.
+  - Rebuilt auth shell as a two-panel light layout (`src/components/auth/auth-layout.tsx`): branding panel (MyDoctorApp, tagline, feature list) hidden on mobile; Clerk form centered on the right.
+  - Added Clerk catch-all routes: `/sign-in/[[...sign-in]]` and `/sign-up/[[...sign-up]]` mounting `<SignIn />` and `<SignUp />` with no extra wrappers.
+  - Replaced patient header logout placeholder with `<UserButton />`; sign-out redirect configured via `ClerkProvider` and `NEXT_PUBLIC_CLERK_AFTER_SIGN_OUT_URL=/sign-in`.
+  - Updated public route constants and header CTAs from `/login` and `/register` to `/sign-in` and `/sign-up`; added Clerk URL env vars to `.env`.
+  - Removed legacy placeholder pages at `/login` and `/register`.
+  - Verified production build succeeds (`npm run build`, 20 routes + proxy).
+
 ## In Progress
 
 - None.
 
 ## Next Up
 
-- Scaffold core stack from `architecture-context.md` (Clerk auth, Prisma + PostgreSQL).
+- Scaffold Prisma + PostgreSQL from `architecture-context.md`.
 
 ## Open Questions
 
-- Database, auth, and API layers are documented but not yet initialized in the codebase.
+- Database and API layers are documented but not yet initialized in the codebase.
 
 ## Architecture Decisions
 
@@ -103,9 +113,10 @@ change.
 - **Doctor profile mock booking:** Profile pages read extended mock doctor records and client-side week/time selection; booking submit surfaces selected ISO date and time via Sonner toast until auth and API integration.
 - **About page static content:** Marketing copy and value cards are hard-coded in section components; team hero image uses Unsplash remote asset per feature spec until Imagekit integration.
 - **Contact page static content:** Office address, phone, email, and careers CTA are centralized in `config/constants/public/routes.ts`; hero image uses Unsplash remote asset per wireframe until Imagekit integration.
+- **Clerk auth (Feature 09):** `src/proxy.ts` (not `middleware.ts`) protects dashboard route groups only (`/patient`, `/provider`, `/admin`); Clerk appearance uses design-system CSS variables; auth pages live at `/sign-in` and `/sign-up` with a split-panel onboarding layout.
 
 ## Session Notes
 
-- All grouped routes compile as static placeholders except `/doctors` and `/doctors/[id]` (dynamic).
-- Provider presence toggle is a client island (`components/provider/provider-status-header.tsx`); full auth-gated behavior waits on Clerk middleware.
-- Resume with Clerk + Prisma scaffolding.
+- All grouped routes compile as static placeholders except `/doctors`, `/doctors/[id]`, `/sign-in`, and `/sign-up` (dynamic).
+- Provider presence toggle is a client island (`components/provider/provider-status-header.tsx`); route protection is active via Clerk proxy.
+- Resume with Prisma + PostgreSQL scaffolding.

@@ -1,10 +1,10 @@
 "use client";
 
+import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { AppLogo } from "@/components/core/app-logo/app-logo";
-import { buttonVariants } from "@/components/ui/button";
 import {
   PATIENT_NAV_ITEMS,
   PATIENT_ROUTES,
@@ -43,15 +43,7 @@ export function PatientHeader() {
         })}
       </nav>
 
-      <Link
-        href="/login"
-        className={cn(
-          buttonVariants({ size: "sm" }),
-          "shrink-0 rounded-full px-4 sm:px-6",
-        )}
-      >
-        Logout
-      </Link>
+      <UserButton />
     </header>
   );
 }

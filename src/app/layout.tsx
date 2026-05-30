@@ -1,8 +1,10 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { Providers } from "@/components/providers";
 import { jetbrainsMono, plusJakartaSans } from "@/fonts";
+import { clerkAppearance } from "@/lib/clerk/appearance";
 
 import "./globals.css";
 
@@ -33,7 +35,12 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <Providers>{children}</Providers>
+        <ClerkProvider
+          appearance={clerkAppearance}
+          afterSignOutUrl="/sign-in"
+        >
+          <Providers>{children}</Providers>
+        </ClerkProvider>
       </body>
     </html>
   );
