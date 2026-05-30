@@ -6,8 +6,18 @@ import { jetbrainsMono, plusJakartaSans } from "@/fonts";
 
 import "./globals.css";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000");
+
 export const metadata: Metadata = {
-  title: "DoctorTap",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "DoctorTap",
+    template: "%s | DoctorTap",
+  },
   description: "Medical appointment platform",
 };
 

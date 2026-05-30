@@ -15,7 +15,7 @@ export function Providers({ children }: { children: ReactNode }) {
         shadow="0 0 10px var(--accent-primary),0 0 4px var(--accent-primary)"
       />
       {children}
-      <Toaster />
+      <Toaster position="top-right" />
     </>
   );
 }

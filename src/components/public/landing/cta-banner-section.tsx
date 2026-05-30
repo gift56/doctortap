@@ -29,7 +29,7 @@ export function CtaBannerSection() {
             </div>
           </div>
 
-          <div className="pointer-events-none absolute right-2 bottom-0 z-10 h-[145%] w-[48%] max-w-64 sm:right-4 sm:max-w-80 md:right-6 md:h-[150%] md:max-w-96 lg:max-w-[28rem] xl:max-w-[32rem]">
+          <div className="pointer-events-none absolute right-2 bottom-0 z-10 h-[145%] w-[48%] max-w-64 sm:right-4 sm:max-w-80 md:right-6 md:h-[150%] md:max-w-96 lg:max-w-md xl:max-w-lg">
             <div className="relative h-full w-full origin-bottom">
               <Image
                 src={LANDING_IMAGES.ctaBannerDoctor}

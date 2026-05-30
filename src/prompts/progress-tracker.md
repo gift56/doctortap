@@ -5,7 +5,7 @@ change.
 
 ## Current Phase
 
-- In progress — Public marketing homepage (Feature 03)
+- Complete — Doctor profile & booking UI (Feature 05)
 
 ## Current Goal
 
@@ -47,6 +47,21 @@ change.
   - Configured `images.remotePatterns` for `images.unsplash.com` in `next.config.ts`.
   - Verified production build succeeds (`npm run build`).
 
+- Feature 04 (`features/04-all-doctors-ui.md`):
+  - Added `src/hooks/use-doctor-filters.ts` syncing `search`, `specialty`, and `page` URL params via `router.push` (no full reload).
+  - Built public doctors directory at `src/app/(public)/doctors/page.tsx` with sidebar specialty filters, search bar, responsive card grid, and pagination toolbar.
+  - Added `src/components/public/doctors/` (directory shell, search input, specialty filters, pagination toolbar) and `src/lib/doctors/filter-doctors.ts` for client-side filter/pagination over mock data.
+  - Updated `DoctorCard` styling: image overlay availability pill, spec typography, `rounded-t-xl` image frame.
+  - Added `no-scrollbar` utility in `globals.css` for mobile horizontal specialty slider.
+  - Verified production build succeeds (`npm run build`).
+
+- Feature 05 (`features/05-doctor-profile-booking.md`):
+  - Extended `src/config/mock-data.ts` with profile fields (`credentials`, `biography`, `appointmentFee`, `verified`), `BOOKING_TIME_SLOTS`, and Dr. Ganesh Lama as the primary mock profile.
+  - Added `src/lib/doctors/get-doctor-by-id.ts`, `booking-calendar.ts`, and `format-appointment-fee.ts` for profile lookup, week-day carousel data, and `₨` fee formatting.
+  - Built doctor profile page at `src/app/(public)/doctors/[id]/page.tsx` with unified header card, interactive booking panel (date carousel + time grid + submit), and related-doctors section.
+  - Added `src/components/public/doctors/` profile modules: `doctor-profile-header.tsx`, `doctor-booking-panel.tsx`, `doctor-related-doctors.tsx`.
+  - Verified production build succeeds (`npm run build`).
+
 ## In Progress
 
 - None.
@@ -54,7 +69,6 @@ change.
 ## Next Up
 
 - Scaffold core stack from `architecture-context.md` (Clerk auth, Prisma + PostgreSQL).
-- Doctor profile & booking page UI (per design reference).
 
 ## Open Questions
 
@@ -70,9 +84,11 @@ change.
 - **Domain layout folders:** Layout chrome lives in `src/components/{auth,public,patient,provider,admin}/`; shared UI such as `PageHeading` lives outside in `src/components/page-heading/`.
 - **Landing mock data:** Marketing homepage reads from `src/config/mock-data.ts` until Prisma/DB integration; no backend dependency for Feature 03.
 - **Scroll animations:** Lightweight `IntersectionObserver` client primitive (`ScrollReveal`) instead of adding a motion library; respects `motion-reduce`.
+- **Doctors directory URL state:** `useDoctorFilters` owns `?search=`, `?specialty=`, and `?page=` for shareable filter/pagination; mock filtering in `lib/doctors/filter-doctors.ts` until API integration.
+- **Doctor profile mock booking:** Profile pages read extended mock doctor records and client-side week/time selection; booking submit surfaces selected ISO date and time via Sonner toast until auth and API integration.
 
 ## Session Notes
 
-- All grouped routes compile as static placeholders except `/doctor/[id]` (dynamic).
+- All grouped routes compile as static placeholders except `/doctors` and `/doctors/[id]` (dynamic).
 - Provider presence toggle is a client island (`components/provider/provider-status-header.tsx`); full auth-gated behavior waits on Clerk middleware.
-- Resume with Clerk + Prisma scaffolding, then doctor profile & booking UI.
+- Resume with Clerk + Prisma scaffolding.

@@ -11,6 +11,40 @@ export interface Doctor {
   experienceYears: number;
   avatarUrl: string;
   availabilityStatus: "Available";
+  credentials: string;
+  biography: string;
+  appointmentFee: number;
+  verified: boolean;
+}
+
+export const BOOKING_TIME_SLOTS = [
+  "8:00 am",
+  "8:30 am",
+  "9:00 am",
+  "9:30 am",
+  "10:00 am",
+  "10:30 am",
+  "11:00 am",
+  "11:30 am",
+] as const;
+
+export type BookingTimeSlot = (typeof BOOKING_TIME_SLOTS)[number];
+
+const DEFAULT_APPOINTMENT_FEE = 1000;
+
+function withProfileFields(
+  doctor: Omit<
+    Doctor,
+    "credentials" | "biography" | "appointmentFee" | "verified"
+  >,
+): Doctor {
+  return {
+    ...doctor,
+    credentials: `MBBS - ${doctor.specialty}`,
+    biography: `Dr. ${doctor.name} is a highly respected ${doctor.specialty.toLowerCase()} with ${doctor.experienceYears} years of experience in diagnosing and treating patients. They specialize in internal medicine and provide comprehensive care for acute and chronic conditions. Dr. ${doctor.name} practices at Bir Hospital, Clinic One, and Stupa Community Hospital.`,
+    appointmentFee: DEFAULT_APPOINTMENT_FEE,
+    verified: true,
+  };
 }
 
 export const LANDING_IMAGES = {
@@ -35,12 +69,15 @@ export const SPECIALTIES: Specialty[] = [
   },
 ];
 
-export const DOCTORS: Doctor[] = [
+const DOCTOR_SEEDS: Omit<
+  Doctor,
+  "credentials" | "biography" | "appointmentFee" | "verified"
+>[] = [
   {
     id: "1",
-    name: "Richard James",
+    name: "Ganesh Lama",
     specialty: "General Physician",
-    experienceYears: 8,
+    experienceYears: 15,
     avatarUrl:
       "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=400&auto=format&fit=crop",
     availabilityStatus: "Available",
@@ -127,3 +164,5 @@ export const DOCTORS: Doctor[] = [
     availabilityStatus: "Available",
   },
 ];
+
+export const DOCTORS: Doctor[] = DOCTOR_SEEDS.map(withProfileFields);
