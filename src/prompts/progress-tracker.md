@@ -5,7 +5,7 @@ change.
 
 ## Current Phase
 
-- Complete — Auth integration (Feature 09)
+- Complete — Patient billing workspace (Feature 12)
 
 ## Current Goal
 
@@ -87,6 +87,28 @@ change.
   - Removed legacy placeholder pages at `/login` and `/register`.
   - Verified production build succeeds (`npm run build`, 20 routes + proxy).
 
+- Feature 10 (`features/10-patient-profile.md`):
+  - Rebuilt patient sub-header (`src/components/patient/patient-header.tsx`): `DoctorTap` + `Patient` badge, centered nav links (`Dashboard`, `Appointments`, `Billing`) with pathname-driven active pill styling, and Clerk `<UserButton />` on the right; token-only `bg-bg-surface` header shell.
+  - Built patient dashboard at `src/app/(patient)/patient/dashboard/page.tsx`: `Health summary` title block, demographics card (`Patient Name`, phone, address, blood group), and `Edit Profile` secondary action (toast until DB).
+  - Added `src/lib/patient/patient-profile.ts` (`resolvePatientProfile`) merging Clerk account fields with mock clinical placeholders; added `patient-health-summary-header.tsx`, `patient-profile-card.tsx`, and `patient-edit-profile-button.tsx`.
+  - Aligned mobile breakpoint: center nav from `md` (`768px`), bottom nav hidden from `md`; main workspace uses `bg-bg-base` with single-column profile grid below `md`.
+  - Verified production build succeeds (`npm run build`, `/patient/dashboard` dynamic).
+  - Added patient dashboard SEO: `buildPatientDashboardMetadata` (`src/lib/seo/patient-dashboard-metadata.ts`) and `PatientDashboardJsonLd` with `noindex` for the authenticated portal route.
+
+- Feature 11 (`features/11-patient-appointments.md`):
+  - Built patient appointments page at `src/app/(patient)/patient/appointments/page.tsx`: `My Appointments` title block and vertical appointment feed from type-safe mock constants.
+  - Added `src/lib/patient/patient-appointments.ts` with three mock rows (pending, payment required, paid) matching `screenshots/image_689cbe.png`.
+  - Added `src/components/appointment-row.tsx`: provider avatar/metadata, date & time badge, and conditional action matrix (cancel-only, pay + cancel, paid badge + cancel) with responsive `sm:` flex collapse.
+  - Placeholder cancel/pay actions surface Sonner toasts until database integration.
+  - Verified production build succeeds (`npm run build`, `/patient/appointments` static).
+
+- Feature 12 (`features/12-patient-billing.md`):
+  - Built patient billing page at `src/app/(patient)/patient/billing/page.tsx`: `Billing & Statements` title block, three summary metric cards (outstanding balance, total paid fees, Paystack status), and payment history table.
+  - Added `src/lib/patient/patient-billing.ts` with `MOCK_BILLING_INVOICES` and aggregate fee helper (`NGN 3,000.00` from three succeeded rows).
+  - Added `src/components/patient/patient-billing-summary-cards.tsx`, `patient-billing-history-table.tsx`, and `patient-billing-download-receipt-button.tsx` (shadcn `Table`, status badges, PDF download toast placeholder).
+  - Billing nav active state uses existing pathname-driven patient header (`/patient/billing`).
+  - Verified production build succeeds (`npm run build`, `/patient/billing` static).
+
 ## In Progress
 
 - None.
@@ -114,9 +136,12 @@ change.
 - **About page static content:** Marketing copy and value cards are hard-coded in section components; team hero image uses Unsplash remote asset per feature spec until Imagekit integration.
 - **Contact page static content:** Office address, phone, email, and careers CTA are centralized in `config/constants/public/routes.ts`; hero image uses Unsplash remote asset per wireframe until Imagekit integration.
 - **Clerk auth (Feature 09):** `src/proxy.ts` (not `middleware.ts`) protects dashboard route groups only (`/patient`, `/provider`, `/admin`); Clerk appearance uses design-system CSS variables; auth pages live at `/sign-in` and `/sign-up` with a split-panel onboarding layout.
+- **Patient profile dashboard (Feature 10):** `/patient/dashboard` is a server-rendered health summary; demographics read Clerk identity fields with mock address/blood group until Prisma; header nav active state is pathname-driven; `Edit Profile` is a styled placeholder action.
+- **Patient appointments list (Feature 11):** `/patient/appointments` renders mock appointment rows from `lib/patient/patient-appointments.ts`; `AppointmentRow` maps three payment states (pending, payment required, paid) with token-only styling; cancel/pay actions are client-side toast placeholders until Prisma.
+- **Patient billing workspace (Feature 12):** `/patient/billing` renders financial summary cards and a mock invoice ledger from `lib/patient/patient-billing.ts`; succeeded/failed status badges and PDF receipt download use client toast placeholders until Paystack and storage integration.
 
 ## Session Notes
 
-- All grouped routes compile as static placeholders except `/doctors`, `/doctors/[id]`, `/sign-in`, and `/sign-up` (dynamic).
+- All grouped routes compile as static placeholders except `/doctors`, `/doctors/[id]`, `/patient/dashboard`, `/sign-in`, and `/sign-up` (dynamic); `/patient/appointments` and `/patient/billing` are static with client islands per row/action.
 - Provider presence toggle is a client island (`components/provider/provider-status-header.tsx`); route protection is active via Clerk proxy.
-- Resume with Prisma + PostgreSQL scaffolding.
+- Resume with Prisma + PostgreSQL scaffolding from `architecture-context.md`.

@@ -4,7 +4,6 @@ import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { AppLogo } from "@/components/core/app-logo/app-logo";
 import {
   PATIENT_NAV_ITEMS,
   PATIENT_ROUTES,
@@ -12,38 +11,54 @@ import {
 } from "@/config/constants/patient/routes";
 import { cn } from "@/lib/utils";
 
+const activeNavClass =
+  "bg-accent-primary/10 text-accent-primary font-medium px-4 py-1.5 rounded-md";
+const inactiveNavClass =
+  "text-text-secondary hover:text-text-primary px-4 py-1.5 transition-all";
+
 export function PatientHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-border-default bg-bg-base px-4 sm:h-16 sm:px-6">
-      <AppLogo path={PATIENT_ROUTES.dashboard} badge="Patient" className="min-w-0" />
+    <header className="relative flex w-full shrink-0 items-center justify-between border-b border-border-default bg-bg-surface px-4 py-4 sm:px-6">
+      <div className="flex min-w-0 items-center gap-2">
+        <Link
+          href={PATIENT_ROUTES.dashboard}
+          className="text-base font-bold tracking-tight text-text-primary"
+        >
+          DoctorTap
+        </Link>
+        <span className="rounded-full border border-border-default bg-bg-base px-2 py-0.5 text-xs font-medium text-text-secondary">
+          Patient
+        </span>
+      </div>
 
-      <nav className="hidden items-center gap-1 lg:flex">
+      <nav
+        className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 md:flex"
+        aria-label="Patient portal"
+      >
         {PATIENT_NAV_ITEMS.map((item) => {
           const active = isPatientNavActive(pathname, item.href);
-          const Icon = item.icon;
 
           return (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "relative flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                active
-                  ? "bg-accent-primary/10 text-accent-primary"
-                  : "text-text-muted hover:bg-bg-surface hover:text-text-primary",
+                "rounded-md text-sm",
+                active ? activeNavClass : inactiveNavClass,
               )}
               aria-current={active ? "page" : undefined}
             >
-              <Icon className="h-4 w-4 shrink-0" aria-hidden />
               {item.label}
             </Link>
           );
         })}
       </nav>
 
-      <UserButton />
+      <div className="flex shrink-0 items-center justify-end">
+        <UserButton />
+      </div>
     </header>
   );
 }
