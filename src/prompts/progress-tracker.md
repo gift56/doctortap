@@ -5,7 +5,7 @@ change.
 
 ## Current Phase
 
-- Complete — Doctor profile & booking UI (Feature 05)
+- Complete — Contact Us page (Feature 07)
 
 ## Current Goal
 
@@ -43,7 +43,7 @@ change.
   - Built landing sections: hero banner, specialty selector, top doctors grid, and bottom CTA banner (`src/components/public/landing/`).
   - Added reusable `DoctorCard` (`src/components/doctor-card.tsx`) and `ScrollReveal` on-scroll fade/slide animations with staggered grid delays.
   - Wired Next.js `Link` routes: book appointment → `/doctors`, doctor cards → `/doctor/[id]`, MORE → `/doctors`, create account → `/register`.
-  - Updated public header: `MyDoctorApp` brand, `All Doctors` nav label, `Login` / `Create Account` actions.
+  - Updated public header: `DoctorTap` brand, `All Doctors` nav label, `Login` / `Create Account` actions.
   - Configured `images.remotePatterns` for `images.unsplash.com` in `next.config.ts`.
   - Verified production build succeeds (`npm run build`).
 
@@ -60,6 +60,21 @@ change.
   - Added `src/lib/doctors/get-doctor-by-id.ts`, `booking-calendar.ts`, and `format-appointment-fee.ts` for profile lookup, week-day carousel data, and `₨` fee formatting.
   - Built doctor profile page at `src/app/(public)/doctors/[id]/page.tsx` with unified header card, interactive booking panel (date carousel + time grid + submit), and related-doctors section.
   - Added `src/components/public/doctors/` profile modules: `doctor-profile-header.tsx`, `doctor-booking-panel.tsx`, `doctor-related-doctors.tsx`.
+  - Verified production build succeeds (`npm run build`).
+
+- Feature 06 (`features/06-about-us-page.md`):
+  - Added `--text-secondary` token in `src/app/globals.css` for body copy typography on marketing sections.
+  - Built About Us page at `src/app/(public)/about/page.tsx` with hero split row (team image + narrative + vision) and value grid section.
+  - Added `src/components/ui/value-card.tsx` with hover micro-interactions and lucide icon accents.
+  - Added `src/components/public/about/about-hero-section.tsx` and `why-choose-us-section.tsx` (Efficiency, Convenience, Personalization cards).
+  - Added About page SEO: `buildAboutPageMetadata` (`title`, `description`, Open Graph, Twitter, canonical) and `AboutPageJsonLd` schema.
+  - Verified production build succeeds (`npm run build`).
+
+- Feature 07 (`features/07-contact-us-page.md`):
+  - Built Contact Us page at `src/app/(public)/contact/page.tsx` with hero split row (clinical image + office details + careers CTA).
+  - Added `src/components/public/contact/contact-hero-section.tsx` with lucide icon contact rows and outline `Explore Jobs` mailto action.
+  - Extended `src/config/constants/public/routes.ts` with `PUBLIC_CONTACT_OFFICE` address lines and `PUBLIC_CONTACT_CAREERS` email.
+  - Added Contact page SEO: `buildContactPageMetadata` (`title`, `description`, `keywords`, Open Graph image, canonical) and `ContactPageJsonLd` schema.
   - Verified production build succeeds (`npm run build`).
 
 ## In Progress
@@ -86,6 +101,8 @@ change.
 - **Scroll animations:** Lightweight `IntersectionObserver` client primitive (`ScrollReveal`) instead of adding a motion library; respects `motion-reduce`.
 - **Doctors directory URL state:** `useDoctorFilters` owns `?search=`, `?specialty=`, and `?page=` for shareable filter/pagination; mock filtering in `lib/doctors/filter-doctors.ts` until API integration.
 - **Doctor profile mock booking:** Profile pages read extended mock doctor records and client-side week/time selection; booking submit surfaces selected ISO date and time via Sonner toast until auth and API integration.
+- **About page static content:** Marketing copy and value cards are hard-coded in section components; team hero image uses Unsplash remote asset per feature spec until Imagekit integration.
+- **Contact page static content:** Office address, phone, email, and careers CTA are centralized in `config/constants/public/routes.ts`; hero image uses Unsplash remote asset per wireframe until Imagekit integration.
 
 ## Session Notes
 

@@ -39,6 +39,17 @@ export const PUBLIC_FOOTER_CONTACT = {
   email: "info@doctortap.com",
 } as const;
 
+export const PUBLIC_CONTACT_OFFICE = {
+  addressLines: [
+    "44600 Himalayan Plaza Patan Road",
+    "Suite 302, Kathmandu, Nepal",
+  ],
+} as const;
+
+export const PUBLIC_CONTACT_CAREERS = {
+  email: "careers@doctortap.com",
+} as const;
+
 export function isPublicNavActive(pathname: string, href: string): boolean {
   if (href === PUBLIC_ROUTES.home) {
     return pathname === href;

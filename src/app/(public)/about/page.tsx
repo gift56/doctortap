@@ -1,12 +1,19 @@
-import { PageHeading } from "@/components/page-heading/page-heading";
+import type { Metadata } from "next";
+
+import { AboutHeroSection } from "@/components/public/about/about-hero-section";
+import { AboutPageJsonLd } from "@/components/public/about/about-page-json-ld";
+import { WhyChooseUsSection } from "@/components/public/about/why-choose-us-section";
+import { buildAboutPageMetadata } from "@/lib/seo/about-page-metadata";
+import { getSiteUrl } from "@/lib/seo/site-url";
+
+export const metadata: Metadata = buildAboutPageMetadata();
 
 export default function AboutPage() {
   return (
-    <section className="mx-auto max-w-3xl px-6 py-16">
-      <PageHeading
-        title="About DoctorTap"
-        description="Connecting patients with verified healthcare providers through secure virtual consultations."
-      />
-    </section>
+    <>
+      <AboutPageJsonLd siteUrl={getSiteUrl()} />
+      <AboutHeroSection />
+      <WhyChooseUsSection />
+    </>
   );
 }

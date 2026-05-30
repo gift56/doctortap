@@ -1,12 +1,17 @@
-import { PageHeading } from "@/components/page-heading/page-heading";
+import type { Metadata } from "next";
+
+import { ContactHeroSection } from "@/components/public/contact/contact-hero-section";
+import { ContactPageJsonLd } from "@/components/public/contact/contact-page-json-ld";
+import { buildContactPageMetadata } from "@/lib/seo/contact-page-metadata";
+import { getSiteUrl } from "@/lib/seo/site-url";
+
+export const metadata: Metadata = buildContactPageMetadata();
 
 export default function ContactPage() {
   return (
-    <section className="mx-auto max-w-3xl px-6 py-16">
-      <PageHeading
-        title="Contact us"
-        description="Reach the DoctorTap team for support, partnerships, or compliance inquiries."
-      />
-    </section>
+    <>
+      <ContactPageJsonLd siteUrl={getSiteUrl()} />
+      <ContactHeroSection />
+    </>
   );
 }

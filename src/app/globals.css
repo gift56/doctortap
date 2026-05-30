@@ -9,6 +9,7 @@
   --color-bg-base: var(--bg-base);
   --color-bg-surface: var(--bg-surface);
   --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
   --color-accent-primary: var(--accent-primary);
   --color-border-default: var(--border-default);
@@ -58,6 +59,7 @@
   --bg-base: #ffffff;
   --bg-surface: #f8fafc;
   --text-primary: #0f172a;
+  --text-secondary: #475569;
   --text-muted: #64748b;
   --accent-primary: #00a396;
   --border-default: #e2e8f0;
