@@ -5,7 +5,7 @@ change.
 
 ## Current Phase
 
-- Complete — Admin add doctor provisioning wizard (Feature 22)
+- Complete — Admin account & system settings workspace (Feature 24)
 
 ## Current Goal
 
@@ -199,6 +199,24 @@ change.
   - Updated admin add-doctor SEO: `buildAdminDoctorsNewMetadata` title/description aligned to provisioning copy; `AdminDoctorsNewJsonLd` with `noindex`.
   - Verified production build succeeds (`npm run build`, `/admin/doctors/new` static with client wizard island).
 
+- Feature 23 (`features/23-admin-payouts.md`):
+  - Built admin platform payouts workspace at `src/app/(admin)/admin/payouts/page.tsx`: `Platform Payouts & Escrow` header block, three global financial metric cards (`₨` escrow, pending queue, lifetime settled), two-column operations layout (awaiting clearance settlement ticket + system dispatches ledger table).
+  - Added `src/lib/admin/admin-payouts.ts` with `MOCK_ADMIN_PAYOUT_LEDGER`, `MOCK_ADMIN_PENDING_PAYOUT`, aggregate `₨` constants, and gateway status formatting helpers.
+  - Added `src/components/admin/payouts/` (`admin-payouts-workspace`, `admin-payouts-metrics`, `admin-pending-payout-request`, `admin-pending-payout-actions`, `admin-system-dispatches-table`, `admin-payouts-json-ld`); Hold/Release Funds actions surface Sonner toasts until Paystack integration.
+  - Payouts sidebar active state via existing pathname-driven `AdminSidebar` (`/admin/payouts`); ledger table wrapped in `overflow-x-auto` for compact viewports; Dispatched/Failed status pills use emerald/rose treatments per spec.
+  - Added admin payouts SEO: `buildAdminPayoutsMetadata` (`src/lib/seo/admin-payouts-metadata.ts`) and `AdminPayoutsJsonLd` with `noindex` for the authenticated portal route.
+  - Extended payouts workspace: white card/table surfaces, `NGN` currency formatting, URL-synced `?page=` pagination (5 rows per page, 12 mock ledger rows), row-click `AdminDispatchDetailsDialog` with Release Funds/Cancel/Close for pending dispatches, compact mobile padding (`p-3`).
+  - Verified production build succeeds (`npm run build`, `/admin/payouts` dynamic with search params).
+
+- Feature 24 (`features/24-admin-settings.md`):
+  - Rebuilt admin top header (`src/components/admin/admin-header.tsx`): token-driven utility bar (`bg-bg-surface`, `px-8 py-4`), Clerk `SignOutButton` logout moved into shadcn `DropdownMenu` avatar trigger (`admin-header-user-menu.tsx`) with `System Administrator` label, `Profile Settings` link to `/admin/settings`, and logout action; settings route intentionally excluded from sidebar nav.
+  - Built admin settings workspace at `src/app/(admin)/admin/settings/page.tsx`: `Account & System Settings` header block, three card sections (`Personal Profile Identity`, `Credential Management`, `Application Information`), react-hook-form + Zod validation via reusable `InputField`/`TextAreaField`, and Cancel/Apply footer controls with toast placeholders until DB integration.
+  - Added `src/lib/admin/admin-settings.ts` with `MOCK_ADMIN_SETTINGS` defaults (`Admin Supervisor`, `system.admin@doctortap.com`, `DoctorTap Platform`); added `src/components/admin/settings/` (`admin-settings-workspace`, `admin-settings-json-ld`).
+  - Installed shadcn `dropdown-menu` primitive (`src/components/ui/dropdown-menu.tsx`).
+  - Added admin settings SEO: `buildAdminSettingsMetadata` (`src/lib/seo/admin-settings-metadata.ts`) and `AdminSettingsJsonLd` with `noindex` for the authenticated portal route.
+  - Updated `ADMIN_ROUTES` with `/admin/settings`.
+  - Verified production build succeeds (`npm run build`, `/admin/settings` static with client form island).
+
 ## In Progress
 
 - None.
@@ -239,9 +257,11 @@ change.
 - **Admin global appointments (Feature 20):** `/admin/appointments` renders mock platform booking ledger from `lib/admin/admin-appointments.ts` (142 rows, URL-synced `status`/`tier`/`page` filters, 10 rows per page) with white filter/table card surfaces, VIP/Premium amber tier badges, `₨` fee formatting, emerald/amber/red status pills, and prev/next pagination footer; SEO uses page-aware `noindex` metadata and JSON-LD like other portal routes until Prisma sync.
 - **Admin doctors management (Feature 21):** `/admin/doctors` renders mock practitioner directory from `lib/admin/admin-doctors.ts` (24 rows, URL-synced `search`/`specialty`/`status`/`page` filters, 10 rows per page) with `Add Doctor Account` provisioning link, emerald/red status pills, `NGN` fee formatting, prev/next pagination footer, and side drawer profile overlay; SEO uses page-aware `noindex` metadata and JSON-LD like other portal routes until Prisma sync.
 - **Admin add doctor wizard (Feature 22):** `/admin/doctors/new` renders a three-step react-hook-form + Zod provisioning wizard from `components/admin/doctors/hooks/use-doctor-stepper.ts` and `components/admin/doctors/new/` with reusable `form-fields` primitives, step connector lines, plain-language field labels/placeholders, `NGN`-prefixed consultation fee input, specialty select from shared mock specialties, white card surfaces, compact mobile container padding, and Complete submit toast placeholder until Clerk and Prisma integration; SEO uses `noindex` metadata and JSON-LD like other portal routes.
+- **Admin platform payouts (Feature 23):** `/admin/payouts` renders mock global escrow metrics and paginated `MOCK_ADMIN_PAYOUT_LEDGER` from `lib/admin/admin-payouts.ts` with `NGN` currency formatting, white card surfaces, awaiting-clearance settlement ticket (Dr. Ram Nepal), dispatch details modal with pending Release/Cancel actions, and system dispatches table with emerald/amber/rose gateway status pills; SEO uses page-aware `noindex` metadata and JSON-LD like other portal routes until Paystack integration.
+- **Admin account & system settings (Feature 24):** `/admin/settings` renders mock root supervisor profile and application metadata from `lib/admin/admin-settings.ts` with three card sections (profile identity, credential rotation, application information), react-hook-form + Zod validation via shared `form-fields` primitives, Cancel/Apply toast placeholders, and header avatar dropdown navigation (not sidebar); SEO uses `noindex` metadata and JSON-LD like other portal routes until Prisma and Clerk credential sync.
 
 ## Session Notes
 
-- All grouped routes compile as static placeholders except `/doctors`, `/doctors/[id]`, `/patient/dashboard`, `/sign-in`, and `/sign-up` (dynamic); `/patient/appointments`, `/patient/billing`, `/provider/dashboard`, `/provider/calendar`, `/provider/profile`, `/admin/dashboard`, and `/admin/doctors/new` are static with client islands; `/provider/patients`, `/provider/payouts`, `/admin/verification`, `/admin/appointments`, and `/admin/doctors` are dynamic via `searchParams` with client filter/pagination islands.
+- All grouped routes compile as static placeholders except `/doctors`, `/doctors/[id]`, `/patient/dashboard`, `/sign-in`, and `/sign-up` (dynamic); `/patient/appointments`, `/patient/billing`, `/provider/dashboard`, `/provider/calendar`, `/provider/profile`, `/admin/dashboard`, `/admin/doctors/new`, and `/admin/settings` are static with client islands; `/provider/patients`, `/provider/payouts`, `/admin/verification`, `/admin/appointments`, `/admin/payouts`, and `/admin/doctors` are dynamic via `searchParams` with client filter/pagination islands.
 - Provider presence toggle is a client island in `components/provider/provider-header.tsx`; route protection is active via Clerk proxy.
 - Resume with Prisma + PostgreSQL scaffolding from `architecture-context.md`.
