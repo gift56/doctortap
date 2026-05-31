@@ -5,7 +5,7 @@ change.
 
 ## Current Phase
 
-- Complete — Admin global appointments workspace (Feature 20)
+- Complete — Admin add doctor provisioning wizard (Feature 22)
 
 ## Current Goal
 
@@ -180,6 +180,25 @@ change.
   - Updated `ADMIN_NAV_ITEMS` and `ADMIN_ROUTES` with `/admin/appointments` between Verification and Users.
   - Extended appointments workspace: shadcn `Select` filters, numbered pagination (Prev / page numbers / Next), `NGN` fee formatting, row-click appointment details dialog with `BaseChart` analytics, and smooth scroll-to-top on page change via `#admin-main-content`.
 
+- Feature 21 (`features/21-admin-doctors.md`):
+  - Built admin doctors management workspace at `src/app/(admin)/admin/doctors/page.tsx`: `Doctors Management` header block, URL-synced search/specialty/status filter toolbar, `Add Doctor Account` link to `/admin/doctors/new`, high-density doctors directory table with `₨` consultation fees, prev/next pagination (`Showing 1-10 of 24 doctors`), and side drawer details overlay.
+  - Added `src/lib/admin/admin-doctors.ts` with `MOCK_ADMIN_DOCTORS_PAGE_1`, 24-row mock dataset, filter/pagination helpers, and `ADMIN_DOCTORS_PAGE_SIZE` (10); added `src/lib/admin/parse-doctor-filters.ts` for URL `search`, `specialty`, `status`, and `page` parsing.
+  - Added `src/components/admin/doctors/` (`admin-doctors-workspace`, filters provider, table, pagination, details drawer, json-ld); filter toolbar and table use token surfaces (`bg-bg-surface`).
+  - Doctors sidebar active state via existing pathname-driven `AdminSidebar` (`/admin/doctors`); table wrapped in `overflow-x-auto` for compact viewports; `View Details` opens right-side drawer with credentials and session logs.
+  - Added admin doctors SEO: `buildAdminDoctorsMetadata` and `buildAdminDoctorsNewMetadata` (`src/lib/seo/admin-doctors-metadata.ts`) with `AdminDoctorsJsonLd` / `AdminDoctorsNewJsonLd` and `noindex` page-aware canonical URLs.
+  - Updated `ADMIN_NAV_ITEMS` and `ADMIN_ROUTES`: replaced legacy `Users` nav node with `Doctors` (`Stethoscope` icon) between Appointments and Payouts; added `/admin/doctors/new` provisioning placeholder page.
+  - Verified production build succeeds (`npm run build`, `/admin/doctors` dynamic with search params).
+  - Refined doctors workspace: white filter/table card surfaces, shadcn pagination with `accent-primary` active page, `NGN` consultation fees, scrollable details drawer with doctor profile section (avatar + bio), and tighter mobile padding (`p-3`).
+
+- Feature 22 (`features/22-admin-add-doctor.md`):
+  - Built admin doctor provisioning wizard at `src/app/(admin)/admin/doctors/new/page.tsx`: `Provision New Doctor` header block, three-step progress tracker (`Login Info`, `Clinical Identity`, `Practice Rates`), step-scoped validation, and white workspace canvas with tight mobile padding (`px-3`).
+  - Added `src/components/core/form-fields.tsx` (`InputField`, `TextAreaField`) with token-driven error borders and messages.
+  - Added `src/components/admin/doctors/hooks/use-doctor-stepper.ts` with Zod `doctorCreationSchema`, react-hook-form resolver, and per-step `trigger` boundaries.
+  - Added `src/components/admin/doctors/new/` (`admin-doctor-provisioning-workspace`, `admin-doctors-new-json-ld`, `doctor-profile-photo-upload`): step connectors, plain-language labels/placeholders, taller inputs, clinical identity profile photo upload (JPG/PNG/WebP, max 1.5 MB client validation), credential step, clinical identity grid (`sm:grid-cols-2`), `NGN`-prefixed fee input, bio textarea, Back/Continue/Complete footer controls, and submit success toast placeholder until Clerk + Prisma integration.
+  - Installed `react-hook-form`, `zod`, and `@hookform/resolvers`.
+  - Updated admin add-doctor SEO: `buildAdminDoctorsNewMetadata` title/description aligned to provisioning copy; `AdminDoctorsNewJsonLd` with `noindex`.
+  - Verified production build succeeds (`npm run build`, `/admin/doctors/new` static with client wizard island).
+
 ## In Progress
 
 - None.
@@ -218,9 +237,11 @@ change.
 - **Admin system dashboard (Feature 18):** `/admin/dashboard` renders mock platform telemetry from `lib/admin/admin-dashboard.ts` (doctor/appointment/patient aggregates and `MOCK_ADMIN_TELEMETRY` consultation ledger) with token-only metric cards, emerald/amber status pills, and `NGN` processing amounts; uses the existing admin grouped layout shell; SEO uses `noindex` metadata and JSON-LD like other portal routes until Prisma sync.
 - **Admin provider verification (Feature 19):** `/admin/verification` renders mock onboarding metrics and `MOCK_PENDING_VERIFICATIONS` queue from `lib/admin/admin-verification.ts` with URL-synced search/specialty/sort/page filters (5 rows per page), `VerificationCard` license document links, and approve/reject toast placeholders; SEO uses page-aware `noindex` metadata and JSON-LD like other portal routes until Prisma sync.
 - **Admin global appointments (Feature 20):** `/admin/appointments` renders mock platform booking ledger from `lib/admin/admin-appointments.ts` (142 rows, URL-synced `status`/`tier`/`page` filters, 10 rows per page) with white filter/table card surfaces, VIP/Premium amber tier badges, `₨` fee formatting, emerald/amber/red status pills, and prev/next pagination footer; SEO uses page-aware `noindex` metadata and JSON-LD like other portal routes until Prisma sync.
+- **Admin doctors management (Feature 21):** `/admin/doctors` renders mock practitioner directory from `lib/admin/admin-doctors.ts` (24 rows, URL-synced `search`/`specialty`/`status`/`page` filters, 10 rows per page) with `Add Doctor Account` provisioning link, emerald/red status pills, `NGN` fee formatting, prev/next pagination footer, and side drawer profile overlay; SEO uses page-aware `noindex` metadata and JSON-LD like other portal routes until Prisma sync.
+- **Admin add doctor wizard (Feature 22):** `/admin/doctors/new` renders a three-step react-hook-form + Zod provisioning wizard from `components/admin/doctors/hooks/use-doctor-stepper.ts` and `components/admin/doctors/new/` with reusable `form-fields` primitives, step connector lines, plain-language field labels/placeholders, `NGN`-prefixed consultation fee input, specialty select from shared mock specialties, white card surfaces, compact mobile container padding, and Complete submit toast placeholder until Clerk and Prisma integration; SEO uses `noindex` metadata and JSON-LD like other portal routes.
 
 ## Session Notes
 
-- All grouped routes compile as static placeholders except `/doctors`, `/doctors/[id]`, `/patient/dashboard`, `/sign-in`, and `/sign-up` (dynamic); `/patient/appointments`, `/patient/billing`, `/provider/dashboard`, `/provider/calendar`, `/provider/profile`, `/admin/dashboard` are static with client islands; `/provider/patients`, `/provider/payouts`, `/admin/verification`, and `/admin/appointments` are dynamic via `searchParams` with client filter/pagination islands.
+- All grouped routes compile as static placeholders except `/doctors`, `/doctors/[id]`, `/patient/dashboard`, `/sign-in`, and `/sign-up` (dynamic); `/patient/appointments`, `/patient/billing`, `/provider/dashboard`, `/provider/calendar`, `/provider/profile`, `/admin/dashboard`, and `/admin/doctors/new` are static with client islands; `/provider/patients`, `/provider/payouts`, `/admin/verification`, `/admin/appointments`, and `/admin/doctors` are dynamic via `searchParams` with client filter/pagination islands.
 - Provider presence toggle is a client island in `components/provider/provider-header.tsx`; route protection is active via Clerk proxy.
 - Resume with Prisma + PostgreSQL scaffolding from `architecture-context.md`.

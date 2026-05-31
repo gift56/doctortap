@@ -2,7 +2,7 @@ import {
   CalendarDays,
   LayoutDashboard,
   ShieldCheck,
-  Users,
+  Stethoscope,
   Wallet,
   type LucideIcon,
 } from "lucide-react";
@@ -11,6 +11,8 @@ export const ADMIN_ROUTES = {
   dashboard: "/admin/dashboard",
   verification: "/admin/verification",
   appointments: "/admin/appointments",
+  doctors: "/admin/doctors",
+  doctorsNew: "/admin/doctors/new",
   users: "/admin/users",
   payouts: "/admin/payouts",
 } as const;
@@ -40,9 +42,9 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
     icon: CalendarDays,
   },
   {
-    href: ADMIN_ROUTES.users,
-    label: "Users",
-    icon: Users,
+    href: ADMIN_ROUTES.doctors,
+    label: "Doctors",
+    icon: Stethoscope,
   },
   {
     href: ADMIN_ROUTES.payouts,
