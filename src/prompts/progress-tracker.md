@@ -5,7 +5,7 @@ change.
 
 ## Current Phase
 
-- Complete — Provider patients directory (Feature 15)
+- Complete — Provider profile settings workspace (Feature 17)
 
 ## Current Goal
 
@@ -135,7 +135,24 @@ change.
   - Verified production build succeeds (`npm run build`, `/provider/patients` dynamic with search params).
 
 - Provider components folder cleanup:
-  - Grouped feature modules under `src/components/provider/{calendar,dashboard,patients}/`; shared shell (`provider-layout`, header, sidebar, bottom nav) remains at the provider root for future feature folders (e.g. payouts).
+  - Grouped feature modules under `src/components/provider/{calendar,dashboard,patients,payouts}/`; shared shell (`provider-layout`, header, sidebar, bottom nav) remains at the provider root.
+
+- Feature 16 (`features/16-provider-payouts.md`):
+  - Built provider payouts workspace at `src/app/(provider)/provider/payouts/page.tsx`: header typography block, three revenue summary cards (`NGN 4,500.00` withdrawable, `NGN 1,000.00` pending escrow, `NGN 24,000.00` lifetime earnings), Paystack settlement destination panel, and distribution ledger table.
+  - Added `src/lib/provider/provider-payouts.ts` with `MOCK_PROVIDER_PAYOUTS`, settlement bank constants, and status formatting helpers.
+  - Added `src/components/provider/payouts/` (`provider-payouts-workspace`, summary cards, settlement destination, distribution ledger table, instant payout/update bank action placeholders).
+  - Payouts sidebar active state via existing pathname-driven `ProviderSidebar` (`/provider/payouts`); ledger table wrapped in `overflow-x-auto` for small viewports; PAID/PROCESSING status pills use emerald/amber treatments per spec.
+  - Added provider payouts SEO: `buildProviderPayoutsMetadata` (`src/lib/seo/provider-payouts-metadata.ts`) and `ProviderPayoutsJsonLd` with `noindex` for the authenticated portal route.
+  - Extended distribution ledger: URL-synced `?page=` pagination (5 per page) via `parseProviderPayoutsPage` / `paginateProviderPayouts`, `ProviderPayoutsPagination` link toolbar, 12 mock ledger rows, and page-aware SEO metadata/canonical URLs.
+  - Verified production build succeeds (`npm run build`, `/provider/payouts` dynamic with search params).
+
+- Feature 17 (`features/17-provider-profile.md`):
+  - Built provider profile settings workspace at `src/app/(provider)/provider/profile/page.tsx`: `Profile Settings` header block, `Public Practice Details` card (avatar + change photo action, two-column form for name/council ID/specialty/experience, bio textarea), and `Practice Pricing Rules` card with `₨`-prefixed base consultation fee input.
+  - Added `src/lib/provider/provider-profile.ts` with `MOCK_PROVIDER_PROFILE` (Dr. Ram Nepal, NMC-8821B, General Physician, 8 years, `1000.00` fee), `REGIONAL_CURRENCY_SYMBOL`, and specialty options from shared mock data.
+  - Added `src/components/provider/profile/` (`provider-profile-workspace`, `provider-profile-json-ld`) with cancel/save and photo-upload toast placeholders until DB and cloud storage integration.
+  - Profile sidebar active state via existing pathname-driven `ProviderSidebar` (`/provider/profile`); responsive form grid collapses to single column below `640px`.
+  - Added provider profile SEO: `buildProviderProfileMetadata` (`src/lib/seo/provider-profile-metadata.ts`) and `ProviderProfileJsonLd` with `noindex` for the authenticated portal route.
+  - Verified production build succeeds (`npm run build`, `/provider/profile` static).
 
 ## In Progress
 
@@ -156,7 +173,7 @@ change.
 - **Light-default theme in `@theme`:** Semantic and shadcn tokens match `ui-context.md` and live in Tailwind `@theme inline` blocks; `:root` injection is avoided.
 - **Public fonts module:** `public/fonts/index.ts` + WOFF2 assets; `@/fonts` path alias; `next/font/google` in layout.
 - **shadcn/ui base-nova:** Primitives generated via the official CLI into `components/ui/` and treated as protected files.
-- **Domain layout folders:** Layout chrome lives in `src/components/{auth,public,patient,provider,admin}/`; provider feature UI is grouped under `src/components/provider/{calendar,dashboard,patients}/` with shared shell components at the provider root; shared UI such as `PageHeading` lives outside in `src/components/page-heading/`.
+- **Domain layout folders:** Layout chrome lives in `src/components/{auth,public,patient,provider,admin}/`; provider feature UI is grouped under `src/components/provider/{calendar,dashboard,patients,payouts,profile}/` with shared shell components at the provider root; shared UI such as `PageHeading` lives outside in `src/components/page-heading/`.
 - **Landing mock data:** Marketing homepage reads from `src/config/mock-data.ts` until Prisma/DB integration; no backend dependency for Feature 03.
 - **Scroll animations:** Lightweight `IntersectionObserver` client primitive (`ScrollReveal`) instead of adding a motion library; respects `motion-reduce`.
 - **Doctors directory URL state:** `useDoctorFilters` owns `?search=`, `?specialty=`, and `?page=` for shareable filter/pagination; mock filtering in `lib/doctors/filter-doctors.ts` until API integration.
@@ -170,9 +187,11 @@ change.
 - **Provider dashboard workspace (Feature 13):** `/provider/dashboard` renders mock practice metrics (`NGN` earnings, appointment/patient counts) and a latest-bookings queue from `lib/provider/provider-dashboard.ts`; sidebar/header shell uses pathname-driven active nav and inline online/offline toggle; queue reject uses client toast placeholder until Prisma.
 - **Provider calendar workspace (Feature 14):** `/provider/calendar` renders mock availability from `lib/provider/provider-calendar.ts` with date-keyed slot state, mini month picker, batch slot generator, weekly copy action, and `SlotPill` delete/booked UX; SEO uses `noindex` metadata and JSON-LD like other portal routes until Prisma sync.
 - **Provider patients directory (Feature 15):** `/provider/patients` renders mock patient cards from `lib/provider/provider-patients.ts` with URL-synced search/sort/status/page filters, 15-per-page pagination, `BaseChart` analytics panel, `PatientCard` diagnosis and status badges, and chart/history toast placeholders; SEO uses `noindex` metadata and JSON-LD like other portal routes until Prisma sync.
+- **Provider payouts workspace (Feature 16):** `/provider/payouts` renders mock revenue summary cards and paginated `MOCK_PROVIDER_PAYOUTS` ledger from `lib/provider/provider-payouts.ts` (URL `?page=` sync, 5 rows per page) with Paystack settlement destination panel, emerald/amber status pills, horizontal table overflow guard, and instant payout/update bank toast placeholders; SEO uses page-aware `noindex` metadata and JSON-LD like other portal routes until Paystack integration.
+- **Provider profile settings (Feature 17):** `/provider/profile` renders mock practitioner profile data from `lib/provider/provider-profile.ts` with `Public Practice Details` and `Practice Pricing Rules` cards, `₨`-prefixed base fee input, specialty select from shared mock specialties, and cancel/save/photo-upload toast placeholders; SEO uses `noindex` metadata and JSON-LD like other portal routes until Prisma and cloud storage integration.
 
 ## Session Notes
 
-- All grouped routes compile as static placeholders except `/doctors`, `/doctors/[id]`, `/patient/dashboard`, `/sign-in`, and `/sign-up` (dynamic); `/patient/appointments`, `/patient/billing`, `/provider/dashboard`, `/provider/calendar` are static with client islands; `/provider/patients` is dynamic via `searchParams` with client filter/chart/pagination islands.
+- All grouped routes compile as static placeholders except `/doctors`, `/doctors/[id]`, `/patient/dashboard`, `/sign-in`, and `/sign-up` (dynamic); `/patient/appointments`, `/patient/billing`, `/provider/dashboard`, `/provider/calendar`, `/provider/profile` are static with client islands; `/provider/patients` and `/provider/payouts` are dynamic via `searchParams` with client filter/chart/pagination islands.
 - Provider presence toggle is a client island in `components/provider/provider-header.tsx`; route protection is active via Clerk proxy.
 - Resume with Prisma + PostgreSQL scaffolding from `architecture-context.md`.
