@@ -14,7 +14,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       <AdminHeader />
       <div className="flex min-h-0 flex-1">
         <AdminSidebar />
-        <main className="min-h-0 flex-1 overflow-y-auto p-4 pb-24 sm:p-6 lg:pb-6">
+        <main
+          id="admin-main-content"
+          className="min-h-0 flex-1 overflow-y-auto pb-20 sm:pb-24 lg:pb-6"
+        >
           {children}
         </main>
       </div>

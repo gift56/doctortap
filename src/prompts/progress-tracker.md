@@ -5,7 +5,7 @@ change.
 
 ## Current Phase
 
-- Complete — Provider profile settings workspace (Feature 17)
+- Complete — Admin global appointments workspace (Feature 20)
 
 ## Current Goal
 
@@ -154,6 +154,32 @@ change.
   - Added provider profile SEO: `buildProviderProfileMetadata` (`src/lib/seo/provider-profile-metadata.ts`) and `ProviderProfileJsonLd` with `noindex` for the authenticated portal route.
   - Verified production build succeeds (`npm run build`, `/provider/profile` static).
 
+- Feature 18 (`features/18-admin-dashboard.md`):
+  - Admin shell retains the original grouped layout (top header bar, left sidebar with active rail, bottom nav on mobile); dashboard workspace content added without changing the shared admin layout structure.
+  - Built admin system dashboard at `src/app/(admin)/admin/dashboard/page.tsx`: `System dashboard` header block, three telemetry metric cards (`24` doctors, `142` appointments, `380` patients), and `Recent Consultations` ledger table with emerald/amber status pills and `NGN` amounts.
+  - Added `src/lib/admin/admin-dashboard.ts` with aggregate constants and `MOCK_ADMIN_TELEMETRY`; added `src/components/admin/dashboard/` (`admin-dashboard-metrics`, `admin-recent-consultations-table`, `admin-dashboard-json-ld`).
+  - Dashboard sidebar active state via existing pathname-driven `AdminSidebar` (`/admin/dashboard`); metric grid collapses to single column below `md`; ledger table wrapped in `overflow-x-auto` for compact viewports.
+  - Added admin dashboard SEO: `buildAdminDashboardMetadata` (`src/lib/seo/admin-dashboard-metadata.ts`) and `AdminDashboardJsonLd` with `noindex` for the authenticated portal route.
+  - Verified production build succeeds (`npm run build`, `/admin/dashboard` static).
+
+- Feature 19 (`features/19-admin-verification.md`):
+  - Built admin provider verification workspace at `src/app/(admin)/admin/verification/page.tsx`: `Provider Verification` header block, three onboarding metrics cards (`8` pending, `24` approved, `32` total registrations), and stacked verification application queue with approve/reject actions.
+  - Added `src/lib/admin/admin-verification.ts` with `MOCK_PENDING_VERIFICATIONS` (8 pending rows), filter/sort/pagination helpers, and aggregate metric constants; added `src/lib/admin/parse-verification-filters.ts` for URL `search`, `specialty`, `sort`, and `page` parsing.
+  - Added `src/components/admin/verification/` (`verification-card`, `admin-verification-metrics`, `admin-verification-workspace`, `admin-verification-filters-provider`, `admin-verification-pagination`, `admin-verification-json-ld`).
+  - Verification sidebar active state via existing pathname-driven `AdminSidebar` (`/admin/verification`); request cards use token-only surfaces with red reject and emerald approve controls; layout collapses to vertical stacks below `lg`.
+  - Added admin verification SEO: `buildAdminVerificationMetadata` (`src/lib/seo/admin-verification-metadata.ts`) and `AdminVerificationJsonLd` with `noindex` for the authenticated portal route.
+  - Extended verification queue: URL-synced search/specialty/sort/page filters, 5-per-page pagination, and page-aware SEO metadata/canonical URLs.
+  - Verified production build succeeds (`npm run build`, `/admin/verification` dynamic with search params).
+
+- Feature 20 (`features/20-admin-appointments.md`):
+  - Built admin global appointments workspace at `src/app/(admin)/admin/appointments/page.tsx`: `Global Appointments` header block, URL-synced status/tier filter toolbar, high-density appointment ledger table with VIP/Premium tier badges and `₨` consultation fees, and prev/next pagination (`Showing 1-10 of 142 appointments`).
+  - Added `src/lib/admin/admin-appointments.ts` with `MOCK_ADMIN_APPOINTMENTS_PAGE_1`, 142-row mock dataset, filter/pagination helpers, and `ADMIN_APPOINTMENTS_PAGE_SIZE` (10); added `src/lib/admin/parse-appointment-filters.ts` for URL `status`, `tier`, and `page` parsing.
+  - Added `src/components/admin/appointments/` (`admin-appointments-workspace`, filters provider, table, pagination, json-ld); filter toolbar and table sheet use white card surfaces (`bg-white`).
+  - Appointments sidebar active state via existing pathname-driven `AdminSidebar` (`/admin/appointments`); table wrapped in `overflow-x-auto` for compact viewports.
+  - Added admin appointments SEO: `buildAdminAppointmentsMetadata` (`src/lib/seo/admin-appointments-metadata.ts`) and `AdminAppointmentsJsonLd` with `noindex` and page-aware canonical URLs.
+  - Updated `ADMIN_NAV_ITEMS` and `ADMIN_ROUTES` with `/admin/appointments` between Verification and Users.
+  - Extended appointments workspace: shadcn `Select` filters, numbered pagination (Prev / page numbers / Next), `NGN` fee formatting, row-click appointment details dialog with `BaseChart` analytics, and smooth scroll-to-top on page change via `#admin-main-content`.
+
 ## In Progress
 
 - None.
@@ -189,9 +215,12 @@ change.
 - **Provider patients directory (Feature 15):** `/provider/patients` renders mock patient cards from `lib/provider/provider-patients.ts` with URL-synced search/sort/status/page filters, 15-per-page pagination, `BaseChart` analytics panel, `PatientCard` diagnosis and status badges, and chart/history toast placeholders; SEO uses `noindex` metadata and JSON-LD like other portal routes until Prisma sync.
 - **Provider payouts workspace (Feature 16):** `/provider/payouts` renders mock revenue summary cards and paginated `MOCK_PROVIDER_PAYOUTS` ledger from `lib/provider/provider-payouts.ts` (URL `?page=` sync, 5 rows per page) with Paystack settlement destination panel, emerald/amber status pills, horizontal table overflow guard, and instant payout/update bank toast placeholders; SEO uses page-aware `noindex` metadata and JSON-LD like other portal routes until Paystack integration.
 - **Provider profile settings (Feature 17):** `/provider/profile` renders mock practitioner profile data from `lib/provider/provider-profile.ts` with `Public Practice Details` and `Practice Pricing Rules` cards, `₨`-prefixed base fee input, specialty select from shared mock specialties, and cancel/save/photo-upload toast placeholders; SEO uses `noindex` metadata and JSON-LD like other portal routes until Prisma and cloud storage integration.
+- **Admin system dashboard (Feature 18):** `/admin/dashboard` renders mock platform telemetry from `lib/admin/admin-dashboard.ts` (doctor/appointment/patient aggregates and `MOCK_ADMIN_TELEMETRY` consultation ledger) with token-only metric cards, emerald/amber status pills, and `NGN` processing amounts; uses the existing admin grouped layout shell; SEO uses `noindex` metadata and JSON-LD like other portal routes until Prisma sync.
+- **Admin provider verification (Feature 19):** `/admin/verification` renders mock onboarding metrics and `MOCK_PENDING_VERIFICATIONS` queue from `lib/admin/admin-verification.ts` with URL-synced search/specialty/sort/page filters (5 rows per page), `VerificationCard` license document links, and approve/reject toast placeholders; SEO uses page-aware `noindex` metadata and JSON-LD like other portal routes until Prisma sync.
+- **Admin global appointments (Feature 20):** `/admin/appointments` renders mock platform booking ledger from `lib/admin/admin-appointments.ts` (142 rows, URL-synced `status`/`tier`/`page` filters, 10 rows per page) with white filter/table card surfaces, VIP/Premium amber tier badges, `₨` fee formatting, emerald/amber/red status pills, and prev/next pagination footer; SEO uses page-aware `noindex` metadata and JSON-LD like other portal routes until Prisma sync.
 
 ## Session Notes
 
-- All grouped routes compile as static placeholders except `/doctors`, `/doctors/[id]`, `/patient/dashboard`, `/sign-in`, and `/sign-up` (dynamic); `/patient/appointments`, `/patient/billing`, `/provider/dashboard`, `/provider/calendar`, `/provider/profile` are static with client islands; `/provider/patients` and `/provider/payouts` are dynamic via `searchParams` with client filter/chart/pagination islands.
+- All grouped routes compile as static placeholders except `/doctors`, `/doctors/[id]`, `/patient/dashboard`, `/sign-in`, and `/sign-up` (dynamic); `/patient/appointments`, `/patient/billing`, `/provider/dashboard`, `/provider/calendar`, `/provider/profile`, `/admin/dashboard` are static with client islands; `/provider/patients`, `/provider/payouts`, `/admin/verification`, and `/admin/appointments` are dynamic via `searchParams` with client filter/pagination islands.
 - Provider presence toggle is a client island in `components/provider/provider-header.tsx`; route protection is active via Clerk proxy.
 - Resume with Prisma + PostgreSQL scaffolding from `architecture-context.md`.

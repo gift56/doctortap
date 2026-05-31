@@ -1,4 +1,5 @@
 import {
+  CalendarDays,
   LayoutDashboard,
   ShieldCheck,
   Users,
@@ -9,6 +10,7 @@ import {
 export const ADMIN_ROUTES = {
   dashboard: "/admin/dashboard",
   verification: "/admin/verification",
+  appointments: "/admin/appointments",
   users: "/admin/users",
   payouts: "/admin/payouts",
 } as const;
@@ -31,6 +33,11 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
     href: ADMIN_ROUTES.verification,
     label: "Verification",
     icon: ShieldCheck,
+  },
+  {
+    href: ADMIN_ROUTES.appointments,
+    label: "Appointments",
+    icon: CalendarDays,
   },
   {
     href: ADMIN_ROUTES.users,

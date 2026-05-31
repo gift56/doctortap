@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 export function AdminHeader() {
   return (
-    <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border-default bg-bg-base px-4 sm:h-16 sm:px-6">
+    <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border-default bg-bg-base px-3 sm:h-16 sm:px-6">
       <AppLogo path={ADMIN_ROUTES.dashboard} badge="Admin" className="min-w-0" />
       <Link
         href="/login"
