@@ -1,6 +1,6 @@
 import { CalendarDays } from "lucide-react";
 
-import { QueueRow } from "@/components/provider/queue-row";
+import { QueueRow } from "@/components/provider/dashboard/queue-row";
 import { MOCK_PROVIDER_QUEUE_BOOKINGS } from "@/lib/provider/provider-dashboard";
 
 export function ProviderLatestBookings() {

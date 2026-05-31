@@ -1,6 +1,6 @@
 "use client";
 
-import { SlotPill } from "@/components/provider/slot-pill";
+import { SlotPill } from "@/components/provider/calendar/slot-pill";
 import type { ProviderAvailabilitySlot } from "@/lib/provider/provider-calendar";
 
 interface ProviderCalendarSlotsGridProps {

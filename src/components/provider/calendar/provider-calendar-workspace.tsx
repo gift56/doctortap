@@ -1,8 +1,8 @@
 "use client";
 
-import { ProviderCalendarDatePicker } from "@/components/provider/provider-calendar-date-picker";
-import { ProviderCalendarSlotGenerator } from "@/components/provider/provider-calendar-slot-generator";
-import { ProviderCalendarSlotsGrid } from "@/components/provider/provider-calendar-slots-grid";
+import { ProviderCalendarDatePicker } from "@/components/provider/calendar/provider-calendar-date-picker";
+import { ProviderCalendarSlotGenerator } from "@/components/provider/calendar/provider-calendar-slot-generator";
+import { ProviderCalendarSlotsGrid } from "@/components/provider/calendar/provider-calendar-slots-grid";
 import { useProviderCalendar } from "@/hooks/use-provider-calendar";
 
 export function ProviderCalendarWorkspace() {

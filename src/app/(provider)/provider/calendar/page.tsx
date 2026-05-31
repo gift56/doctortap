@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-import { ProviderCalendarJsonLd } from "@/components/provider/provider-calendar-json-ld";
-import { ProviderCalendarWorkspace } from "@/components/provider/provider-calendar-workspace";
+import { ProviderCalendarJsonLd } from "@/components/provider/calendar/provider-calendar-json-ld";
+import { ProviderCalendarWorkspace } from "@/components/provider/calendar/provider-calendar-workspace";
 import { buildProviderCalendarMetadata } from "@/lib/seo/provider-calendar-metadata";
 import { getSiteUrl } from "@/lib/seo/site-url";
 

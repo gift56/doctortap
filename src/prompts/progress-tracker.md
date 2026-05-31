@@ -5,7 +5,7 @@ change.
 
 ## Current Phase
 
-- Complete — Provider calendar workspace (Feature 14)
+- Complete — Provider patients directory (Feature 15)
 
 ## Current Goal
 
@@ -57,7 +57,7 @@ change.
 
 - Feature 05 (`features/05-doctor-profile-booking.md`):
   - Extended `src/config/mock-data.ts` with profile fields (`credentials`, `biography`, `appointmentFee`, `verified`), `BOOKING_TIME_SLOTS`, and Dr. Ganesh Lama as the primary mock profile.
-  - Added `src/lib/doctors/get-doctor-by-id.ts`, `booking-calendar.ts`, and `format-appointment-fee.ts` for profile lookup, week-day carousel data, and `₨` fee formatting.
+  - Added `src/lib/doctors/get-doctor-by-id.ts`, `booking-calendar.ts`, and `format-appointment-fee.ts` for profile lookup, week-day carousel data, and `NGN` fee formatting.
   - Built doctor profile page at `src/app/(public)/doctors/[id]/page.tsx` with unified header card, interactive booking panel (date carousel + time grid + submit), and related-doctors section.
   - Added `src/components/public/doctors/` profile modules: `doctor-profile-header.tsx`, `doctor-booking-panel.tsx`, `doctor-related-doctors.tsx`.
   - Verified production build succeeds (`npm run build`).
@@ -111,7 +111,7 @@ change.
 
 - Feature 13 (`features/13-provider-dashboard.md`):
   - Rebuilt provider shell: left sidebar (`w-64`, token-only active/secondary nav links) and merged header strip (`DoctorTap` + `Provider` badge, operational status toggle, Clerk `SignOutButton` logout).
-  - Built provider dashboard at `src/app/(provider)/provider/dashboard/page.tsx`: three metric cards (`₨ 1000` earnings, `2` appointments, `5` patients) and `Latest Bookings` feed.
+  - Built provider dashboard at `src/app/(provider)/provider/dashboard/page.tsx`: three metric cards (`NGN 1000` earnings, `2` appointments, `5` patients) and `Latest Bookings` feed.
   - Added `src/lib/provider/provider-dashboard.ts` with mock metrics and queue rows; `provider-dashboard-metrics.tsx`, `provider-latest-bookings.tsx`, and `queue-row.tsx` (reject action toast placeholder).
   - Removed standalone `provider-status-header.tsx`; presence toggle lives in `provider-header.tsx`.
   - Added provider dashboard SEO: `buildProviderDashboardMetadata` (`src/lib/seo/provider-dashboard-metadata.ts`) and `ProviderDashboardJsonLd` with `noindex` for the authenticated portal route.
@@ -120,10 +120,22 @@ change.
 - Feature 14 (`features/14-provider-calendar.md`):
   - Built provider calendar at `src/app/(provider)/provider/calendar/page.tsx`: split-screen scheduling workspace (`lg:grid-cols-12`), header typography block, mini month grid, batch slot generator (start/end selects, 30/45/60 min intervals), and active slots grid.
   - Added `src/lib/provider/provider-calendar.ts` with `MOCK_PROVIDER_SLOTS`, slot generation/merge helpers, and calendar month/week utilities.
-  - Added `src/components/provider/provider-calendar-workspace.tsx`, `slot-pill.tsx` (active delete-on-hover pills; booked slots locked with muted styling).
+  - Added `src/components/provider/calendar/provider-calendar-workspace.tsx`, `slot-pill.tsx` (active delete-on-hover pills; booked slots locked with muted styling).
   - Calendar sidebar active state via existing pathname-driven `ProviderSidebar` (`/provider/calendar`).
   - Added provider calendar SEO: `buildProviderCalendarMetadata` (`src/lib/seo/provider-calendar-metadata.ts`) and `ProviderCalendarJsonLd` with `noindex` for the authenticated portal route.
   - Verified production build succeeds (`npm run build`, `/provider/calendar` static).
+
+- Feature 15 (`features/15-patients-ui.md`):
+  - Built provider patients directory at `src/app/(provider)/provider/patients/page.tsx`: header typography block, search/filter toolbar (name/ID/condition lookup, sort by recent activity/name/total visits, status filter), and responsive three-column patient card grid.
+  - Added `src/lib/provider/provider-patients.ts` with type-safe `MOCK_PROVIDER_PATIENTS`, visit-count map for sort, and client-side filter/sort helpers.
+  - Added `src/components/provider/patients/patient-card.tsx` (profile row, diagnosis flag, Active Treatment/Discharged badges, chart/history action placeholders) and `provider-patients-workspace.tsx` (search + dual select controls, filtered grid).
+  - Patients sidebar active state via existing pathname-driven `ProviderSidebar` (`/provider/patients`).
+  - Added provider patients SEO: `buildProviderPatientsMetadata` (`src/lib/seo/provider-patients-metadata.ts`) and `ProviderPatientsJsonLd` with `noindex` for the authenticated portal route.
+  - Extended patients directory: URL-synced filters (`search`, `sort`, `status`, `page`) via `ProviderPatientFiltersProvider`, 28 mock patients with 15-per-page pagination, analytics charts (`BaseChart` + `ProviderPatientsCharts`), and `capitalize` select labels.
+  - Verified production build succeeds (`npm run build`, `/provider/patients` dynamic with search params).
+
+- Provider components folder cleanup:
+  - Grouped feature modules under `src/components/provider/{calendar,dashboard,patients}/`; shared shell (`provider-layout`, header, sidebar, bottom nav) remains at the provider root for future feature folders (e.g. payouts).
 
 ## In Progress
 
@@ -144,7 +156,7 @@ change.
 - **Light-default theme in `@theme`:** Semantic and shadcn tokens match `ui-context.md` and live in Tailwind `@theme inline` blocks; `:root` injection is avoided.
 - **Public fonts module:** `public/fonts/index.ts` + WOFF2 assets; `@/fonts` path alias; `next/font/google` in layout.
 - **shadcn/ui base-nova:** Primitives generated via the official CLI into `components/ui/` and treated as protected files.
-- **Domain layout folders:** Layout chrome lives in `src/components/{auth,public,patient,provider,admin}/`; shared UI such as `PageHeading` lives outside in `src/components/page-heading/`.
+- **Domain layout folders:** Layout chrome lives in `src/components/{auth,public,patient,provider,admin}/`; provider feature UI is grouped under `src/components/provider/{calendar,dashboard,patients}/` with shared shell components at the provider root; shared UI such as `PageHeading` lives outside in `src/components/page-heading/`.
 - **Landing mock data:** Marketing homepage reads from `src/config/mock-data.ts` until Prisma/DB integration; no backend dependency for Feature 03.
 - **Scroll animations:** Lightweight `IntersectionObserver` client primitive (`ScrollReveal`) instead of adding a motion library; respects `motion-reduce`.
 - **Doctors directory URL state:** `useDoctorFilters` owns `?search=`, `?specialty=`, and `?page=` for shareable filter/pagination; mock filtering in `lib/doctors/filter-doctors.ts` until API integration.
@@ -155,11 +167,12 @@ change.
 - **Patient profile dashboard (Feature 10):** `/patient/dashboard` is a server-rendered health summary; demographics read Clerk identity fields with mock address/blood group until Prisma; header nav active state is pathname-driven; `Edit Profile` is a styled placeholder action.
 - **Patient appointments list (Feature 11):** `/patient/appointments` renders mock appointment rows from `lib/patient/patient-appointments.ts`; `AppointmentRow` maps three payment states (pending, payment required, paid) with token-only styling; cancel/pay actions are client-side toast placeholders until Prisma.
 - **Patient billing workspace (Feature 12):** `/patient/billing` renders financial summary cards and a mock invoice ledger from `lib/patient/patient-billing.ts`; succeeded/failed status badges and PDF receipt download use client toast placeholders until Paystack and storage integration.
-- **Provider dashboard workspace (Feature 13):** `/provider/dashboard` renders mock practice metrics (`₨` earnings, appointment/patient counts) and a latest-bookings queue from `lib/provider/provider-dashboard.ts`; sidebar/header shell uses pathname-driven active nav and inline online/offline toggle; queue reject uses client toast placeholder until Prisma.
+- **Provider dashboard workspace (Feature 13):** `/provider/dashboard` renders mock practice metrics (`NGN` earnings, appointment/patient counts) and a latest-bookings queue from `lib/provider/provider-dashboard.ts`; sidebar/header shell uses pathname-driven active nav and inline online/offline toggle; queue reject uses client toast placeholder until Prisma.
 - **Provider calendar workspace (Feature 14):** `/provider/calendar` renders mock availability from `lib/provider/provider-calendar.ts` with date-keyed slot state, mini month picker, batch slot generator, weekly copy action, and `SlotPill` delete/booked UX; SEO uses `noindex` metadata and JSON-LD like other portal routes until Prisma sync.
+- **Provider patients directory (Feature 15):** `/provider/patients` renders mock patient cards from `lib/provider/provider-patients.ts` with URL-synced search/sort/status/page filters, 15-per-page pagination, `BaseChart` analytics panel, `PatientCard` diagnosis and status badges, and chart/history toast placeholders; SEO uses `noindex` metadata and JSON-LD like other portal routes until Prisma sync.
 
 ## Session Notes
 
-- All grouped routes compile as static placeholders except `/doctors`, `/doctors/[id]`, `/patient/dashboard`, `/sign-in`, and `/sign-up` (dynamic); `/patient/appointments`, `/patient/billing`, `/provider/dashboard`, and `/provider/calendar` are static with client islands per row/action/toggle.
+- All grouped routes compile as static placeholders except `/doctors`, `/doctors/[id]`, `/patient/dashboard`, `/sign-in`, and `/sign-up` (dynamic); `/patient/appointments`, `/patient/billing`, `/provider/dashboard`, `/provider/calendar` are static with client islands; `/provider/patients` is dynamic via `searchParams` with client filter/chart/pagination islands.
 - Provider presence toggle is a client island in `components/provider/provider-header.tsx`; route protection is active via Clerk proxy.
 - Resume with Prisma + PostgreSQL scaffolding from `architecture-context.md`.

@@ -34,7 +34,7 @@ A responsive 3-column data-dense grid layout module (`grid-cols-1 md:grid-cols-3
 
 * **Card 1: Platform Practice Earnings**
   * Structure: `bg-bg-surface border border-border-default p-6 rounded-xl flex items-center gap-4`
-  * Elements: Left-side rounded container canvas hosting a teal cash register or wallet icon. Right side displays descriptive label `Earnings` (`text-xs text-text-secondary font-medium`) over large metric text string `₨ 1000` (`text-2xl font-bold text-text-primary`).
+  * Elements: Left-side rounded container canvas hosting a teal cash register or wallet icon. Right side displays descriptive label `Earnings` (`text-xs text-text-secondary font-medium`) over large metric text string `NGN 1000` (`text-2xl font-bold text-text-primary`).
 * **Card 2: Booked Session Aggregates**
   * Elements: Displays a book or calendar icon variant tracking descriptive text label `Appointments` over bold numerical metric text `2`.
 * **Card 3: Unique Client Profiles Ledger**
@@ -52,6 +52,6 @@ A responsive 3-column data-dense grid layout module (`grid-cols-1 md:grid-cols-3
 
 ## Verification Criteria
 - [ ] Left sidebar tracking links align correctly with active system path locations without rendering layout displacement flags.
-- [ ] Financial data metrics display appropriate regional currency characters (`₨`) matching currency symbols across patient modules.
+- [ ] Financial data metrics display appropriate regional currency characters (`NGN`) matching currency symbols across patient modules.
 - [ ] Every button component drawing interaction cues uses design tokens dynamically with zero dark mode background artifacts leaking onto viewports.
 - [ ] The patient feed grid wraps seamlessly into clean vertical block cards on narrow mobile viewports (`< 768px`).

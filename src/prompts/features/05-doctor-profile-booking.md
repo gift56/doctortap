@@ -16,7 +16,7 @@ This specification details the dynamic presentation layout for the dedicated pra
 - **Title Row:** Full name text typography (`Dr. Ganesh Lama`) flanked by an explicit green verified emblem asset badge.
 - **Credentials Pill:** Inline display string showing academic credentials alongside professional tenure parameters (`MBBS - General Physician`, `15 Years`).
 - **Biography Text Block:** Left-aligned summary block showing detailed credentials and background information.
-- **Financial Ticker:** Clear currency marker layout showcasing standard diagnostic booking fees (`Appointment fee: ₨ 1000`) styled with explicit color contrasts.
+- **Financial Ticker:** Clear currency marker layout showcasing standard diagnostic booking fees (`Appointment fee: NGN 1000`) styled with explicit color contrasts.
 
 ### 2. Advanced Interactive Slot Booking Interface
 
